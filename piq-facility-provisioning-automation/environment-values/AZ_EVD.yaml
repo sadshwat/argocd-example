@@ -1,0 +1,8 @@
+image:
+  repository: piq-facility-provisioning-automation
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "1"
+isGCP: false
+replicaCount: 1
+configMap:
+  appProfile: azureevd

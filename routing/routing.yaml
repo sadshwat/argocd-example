@@ -12,7 +12,7 @@ spec:
   #         host: /asset-configuration
   - match:
       - uri:
-          prefix: /piq-facility-provisioning-automation
+          prefix: /services/piq-facility-provisioning-automation
     route: 
       - destination: 
-          host: piq-facility-provisioning-automation
+          host: /services/piq-facility-provisioning-automation

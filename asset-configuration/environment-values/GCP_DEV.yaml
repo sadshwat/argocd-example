@@ -1,0 +1,28 @@
+image:
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "1"
+isGCP: true
+configjson: |-
+  {
+    "projectID": "p2020-piq-dev",
+    "serviceName": "asset-configuration",
+    "certFilePath": "../cert/service.pem",
+    "cacheDBNumber": "1",
+    "cacheTTL": "60",
+    "LoggerTimeoutQueueHandler": "60",
+    "keyFilePath": "../cert/service.key",
+    "isLocal": "false",
+    "cacheHost": "redis-master.default.svc.cluster.local:6379",
+    "enableSecurity": "false",
+    "logLevel": "critical",
+    "logName": "asset-configuration",
+    "port": "8081",
+    "LoggerSizeLogQueue": "30",
+    "mongoDatabase": "slb",
+    "blobName": "gs://dev_asset_configuration",
+    "confFile": "config-dev",
+    "authenticationUrl": "https://evd.processiq.cloud.slb-ds.com/api/auth/validateToken",
+    "projectId": "p2020-piq-dev",
+    "enableCache": "false",
+    "LoggerSizeSendQueue": "10"
+  }

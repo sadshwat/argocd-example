@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "asset-configuration.fullname" . }}
+  labels:
+    {{- include "asset-configuration.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "asset-configuration.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "asset-configuration.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "asset-configuration.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: config-json
+          configMap:
+            name: {{ include "asset-configuration.fullname" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          volumeMounts:
+            - name: config-json
+              mountPath: /app/config
+          env:
+            - name: CONFIG_PATH
+              value: /app/config/config.json
+            {{- if .Values.isGCP}}
+            - name: SECRET_MONGODB_CONNECTIONSTRING
+              valueFrom:
+                secretKeyRef:
+                  key: secretTokenMongodbConnectionString
+                  name: processiq-mongodb-secret-2
+            {{- else }}
+            - name: SECRET_MONGODB_CONNECTIONSTRING
+              valueFrom:
+                secretKeyRef:
+                  key: secretTokenMongodbConnectionString
+                  name: processiq-mongodb-secret-2
+              {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.deployment.port }}
+            - name: grpcport
+              containerPort: {{ .Values.deployment.grpcport }}
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.deployment.port }}
+            initialDelaySeconds: 90
+            periodSeconds: 5
+            timeoutSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.deployment.port }}
+            initialDelaySeconds: 90
+            periodSeconds: 5
+            timeoutSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

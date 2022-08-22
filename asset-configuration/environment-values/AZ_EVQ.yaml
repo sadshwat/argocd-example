@@ -1,0 +1,27 @@
+image:
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "1"
+isGCP: false
+configjson: |-
+  {
+    "projectID": "p2020-piq-dev",
+    "serviceName": "asset-configuration",
+    "port": 8081,
+    "logLevel": "critical",
+    "projectId": "p2020-piq-dev",
+    "logName": "asset-configuration",
+    "blobName": "azblob://asset-configuration",
+    "confFile": "config-dev",
+    "cacheHost": "redis-master.default.svc.cluster.local:6379",
+    "cacheDBNumber" : 1,
+    "cacheTTL": 60,
+    "enableCache": false,
+    "LoggerSizeLogQueue": 30,
+    "LoggerSizeSendQueue": 10,
+    "LoggerTimeoutQueueHandler": 60,
+    "enableSecurity": false,
+    "certFilePath": "../cert/service.pem",
+    "keyFilePath": "../cert/service.key",
+    "authenticationUrl": "https://evq.processops-azure.cloud.slb-ds.com/api/auth/validateToken",
+    "mongoDatabase":"processops"
+   }

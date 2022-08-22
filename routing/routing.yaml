@@ -4,12 +4,12 @@ metadata:
   name: processops-routing-service
 spec:
   http:
-  - match:
-      - uri:
-          prefix: /asset-configuration
-    route:
-      - destination:
-          host: /asset-configuration
+  # - match:
+  #     - uri:
+  #         prefix: /asset-configuration
+  #   route:
+  #     - destination:
+  #         host: /asset-configuration
   - match:
       - uri:
           prefix: /piq-facility-provisioning-automation

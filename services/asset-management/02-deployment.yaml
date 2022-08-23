@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: asset-management
+    cluster-name: p2020-processiq
+    ssr: ear-aa-6318
+    project-id: GCP_ProjectId
+    env: GCP_Environment
+  name: asset-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: asset-management
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0%
+      maxSurge: 100%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: asset-management
+        cluster-name: p2020-processiq
+        ssr: ear-aa-6318
+        project-id: GCP_ProjectId
+        env: GCP_Environment
+    spec:
+      serviceAccountName: saasset-management
+      containers:
+      - name: asset-management
+        image: gcr.io/GCP_ProjectId/Build_Repository_Name:Build_BuildNumber
+        env: 
+        - name: APP_PROFILE
+          valueFrom: 
+            configMapKeyRef: 
+              key: appProfile
+              name: cm-asset-management
+        - name: APP_NAME
+          valueFrom: 
+            configMapKeyRef: 
+              key: appName
+              name: cm-asset-management
+        - name: CONFIG_SERVER
+          valueFrom: 
+            configMapKeyRef: 
+              key: configServer
+              name: cm-asset-management
+        - name: SECRET_MONGODB_CONNECTIONSTRING
+          valueFrom:
+            secretKeyRef:
+              key: secretTokenMongodbConnectionString
+              name: processiq-mongodb-secret-2
+        ports:
+        - containerPort: 8080
+          name: http
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 90
+          periodSeconds: 5
+          timeoutSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 90
+          periodSeconds: 5
+          timeoutSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: "128Mi"
+#          limits:
+#            cpu: 500m
+#            memory: "1Gi"

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: asset-management
+  name: asset-management
+spec:
+  type: ClusterIP
+  selector:
+    run: asset-management
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080

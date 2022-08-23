@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-APP_NAME
+data:
+  appProfile: APP_PROFILE
+  appName: APP_NAME
+  configServer: http://CONFIG_SERVER_SERVICE:CONFIG_SERVER_PORT/

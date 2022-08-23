@@ -10,9 +10,9 @@ spec:
     route:
       - destination:
           host: /asset-configuration
-  # - match:
-  #     - uri:
-  #         prefix: /services/piq-facility-provisioning-automation
-  #   route: 
-  #     - destination: 
-  #         host: /services/piq-facility-provisioning-automation
+  - match:
+      - uri:
+          prefix: /services/piq-facility-provisioning-automation
+    route: 
+      - destination: 
+          host: /services/piq-facility-provisioning-automation

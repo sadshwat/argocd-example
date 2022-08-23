@@ -8,7 +8,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: services/piq-facility-provisioning-automation/helm
+    path: services/piq-facility-provisioning-automation
     repoURL: https://github.com/sadshwat/argocd-example.git
     targetRevision: master
   syncPolicy:
